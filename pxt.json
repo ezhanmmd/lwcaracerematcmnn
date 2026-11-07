@@ -1,0 +1,17 @@
+{
+    "name": "lwcaracerematcmnn",
+    "version": "0.0.1",
+    "description": "Top-down car racing arena with shop, laps, engine sound and NeoPixel lights",
+    "dependencies": {
+        "device": "*",
+        "radio": "*",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0",
+        "arcade-mini-menu": "github:riknoll/arcade-mini-menu#v0.1.0",
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.6.0"
+    },
+    "files": [
+        "main.ts",
+        "README.md"
+    ],
+    "preferredEditor": "tsprj"
+}
