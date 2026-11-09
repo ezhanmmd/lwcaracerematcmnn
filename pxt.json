@@ -1,7 +1,7 @@
 {
     "name": "lwcaracerematcmnn",
     "version": "0.0.1",
-    "description": "Top-down car racing arena with shop, laps, engine sound and NeoPixel lights",
+    "description": "Top-down car racing arena with shop, laps, engine sound, NeoPixel lights, and a radio remote for a robot car",
     "dependencies": {
         "device": "*",
         "radio": "*",

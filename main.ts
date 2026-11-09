@@ -1,5 +1,6 @@
 // lwcaracerematcmnn - by Ezhan
 // A = gas, B = brake/reverse, Left/Right = steer, Menu = SHOP
+// The same buttons are sent on radio group 7 to the real robot car.
 
 // ---------- TRACK ----------
 let track = image.create(160, 120)
@@ -459,10 +460,76 @@ let closeLabel = textsprite.create("", 0, 2)
 closeLabel.z = 20
 
 // ---------- EXTENSION: Radio (wireless, WiFi/Bluetooth style 2-player) ----------
+// Group 7 is shared. Scores stay numbers. Drive words stay strings,
+// so the robot car and the P2 score do not get mixed up.
 radio.setGroup(7)
 radio.onReceivedNumber(function (receivedNumber) {
     p2Label.setText("P2 wireless: " + receivedNumber)
     flashLights(9)
+})
+
+// ---------- ROBOT CAR REMOTE ----------
+// Words the car understands: forward, back, left, right, stop,
+// and the mixes forward-left, forward-right, back-left, back-right.
+// Sent when the buttons change, and again every 250 ms while held,
+// so the car can stop itself if the radio goes quiet.
+let robotCmd = ""
+let robotSentAt = 0
+function currentRobotCmd() {
+    // The shop freezes the race car, so the real car stops too.
+    if (shopOpen) {
+        return "stop"
+    }
+    let gas = controller.A.isPressed()
+    let brake = controller.B.isPressed()
+    let steerLeft = controller.left.isPressed()
+    let steerRight = controller.right.isPressed()
+    if (steerLeft && steerRight) {
+        steerLeft = false
+        steerRight = false
+    }
+    if (gas && brake) {
+        gas = false
+        brake = false
+    }
+    if (gas && steerLeft) {
+        return "forward-left"
+    }
+    if (gas && steerRight) {
+        return "forward-right"
+    }
+    if (brake && steerLeft) {
+        return "back-left"
+    }
+    if (brake && steerRight) {
+        return "back-right"
+    }
+    if (gas) {
+        return "forward"
+    }
+    if (brake) {
+        return "back"
+    }
+    if (steerLeft) {
+        return "left"
+    }
+    if (steerRight) {
+        return "right"
+    }
+    return "stop"
+}
+function sendRobotCmd() {
+    let cmd = currentRobotCmd()
+    let now = game.runtime()
+    if (cmd == robotCmd && now - robotSentAt < 250) {
+        return
+    }
+    radio.sendString(cmd)
+    robotCmd = cmd
+    robotSentAt = now
+}
+game.onUpdate(function () {
+    sendRobotCmd()
 })
 
 // ---------- EXTENSION: Sprite Utils (arcade-sprite-util) ----------
