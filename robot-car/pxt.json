@@ -1,0 +1,19 @@
+{
+    "name": "robot-car",
+    "version": "0.0.1",
+    "description": "Receives drive words from the Arcade race on radio group 7 and drives a Kitronik Servo:Lite car.",
+    "dependencies": {
+        "core": "*",
+        "radio": "*",
+        "microphone": "*",
+        "pxt-kitronik-servo-lite": "github:kitronikltd/pxt-kitronik-servo-lite#v1.0.9"
+    },
+    "files": [
+        "main.ts",
+        "README.md"
+    ],
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
+}
